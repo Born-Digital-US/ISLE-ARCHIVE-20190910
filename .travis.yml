@@ -11,7 +11,7 @@ services:
   - docker
 
 before_install:
-  - git clone git@github.com:Born-Digital-US/isle-ingest-samples.git bd-samples
+  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git 
   - docker-compose pull
   - docker-compose up -d
   - sleep 40
