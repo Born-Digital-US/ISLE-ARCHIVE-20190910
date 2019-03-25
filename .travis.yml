@@ -1,12 +1,21 @@
-language: ruby
+language: minimal
+
+branches:
+  only:
+  - travis
+
+notifications:
+  email: false
 
 services:
   - docker
 
 before_install:
+  - git clone git@github.com:Born-Digital-US/isle-ingest-samples.git bd-samples
   - docker-compose pull
   - docker-compose up -d
-  - docker ps -a
+  - sleep 40
+  - set -x && docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh
 
 script:
   - docker ps -a
