@@ -4,6 +4,9 @@ branches:
   only:
   - travis
 
+git:
+  submodules: false
+
 notifications:
   email: false
 
@@ -11,7 +14,7 @@ services:
   - docker
 
 before_install:
-  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git 
+  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git
   - docker-compose pull
   - docker-compose up -d
   - sleep 40
