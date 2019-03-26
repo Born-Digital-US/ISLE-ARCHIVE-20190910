@@ -1,5 +1,8 @@
 language: minimal
+# because we edit /etc/hosts
 sudo: required
+# gives us a prefix function to handle no-output situations up to X minutes
+install: travis_wait 20 mvn install
 
 branches:
   only:
