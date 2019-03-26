@@ -45,4 +45,4 @@ before_install:
   # - docker exec -it isle-apache-ld bash -c "mkdir /tmp/artifacts"
 
 script:
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=travis --verbose"
+  - travis_wait 20 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=travis --verbose"
