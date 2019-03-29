@@ -39,8 +39,8 @@ before_install:
   - docker cp isle-ingest-samples isle-apache-ld:/var/www/html/bd-samples
   - sudo -- sh -c "echo 127.0.0.1 isle.localdomain >> /etc/hosts"
   # full ingest
-  # - travis_wait 40 docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
-  - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
+  - travis_wait 60 docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
+  # - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
   # partial ingest
   # - docker exec -it isle-apache-ld bash -c "head -n40 /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh > /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh && sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh /var/www/html"
   - docker exec -it isle-apache-ld bash -c "mv /var/www/html/bd-samples/behat /var/www/html/sites/."
