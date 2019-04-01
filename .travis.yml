@@ -38,8 +38,9 @@ before_install:
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
   - docker cp isle-ingest-samples isle-apache-ld:/var/www/html/bd-samples
   - sudo -- sh -c "echo 127.0.0.1 isle.localdomain >> /etc/hosts"
+  - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html 0" # everything but the newspaper OCR
   # full ingest
-  - travis_wait 60 docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
+  - travis_wait 60 docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html 1" # now run the ORC
   # - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
   # partial ingest
   # - docker exec -it isle-apache-ld bash -c "head -n40 /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh > /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh && sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh /var/www/html"
