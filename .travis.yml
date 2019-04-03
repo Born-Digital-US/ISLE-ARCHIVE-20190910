@@ -7,7 +7,6 @@ sudo: required
 branches:
   only:
   - travis
-  - travis-1-1-1-release
 
 git:
   submodules: false
