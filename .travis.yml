@@ -43,7 +43,7 @@ before_install:
   # - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
   # partial ingest
   # - docker exec -it isle-apache-ld bash -c "head -n40 /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh > /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh && sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh /var/www/html"
-  - docker exec -it isle-apache-ld bash -c "mv /var/www/html/bd-samples/behat /var/www/html/sites/."
+  - docker exec -it isle-apache-ld bash -c "mv /var/www/html/bd-samples/behat /var/www/html/sites/. && mkdir /var/www/html/sites/behat/debug && mkdir /var/www/html/sites/behat/debug/logs"
   - docker exec -it isle-apache-ld bash -c "composer global require drush/drush:7.*"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && rm composer.lock && composer install "
   # - docker exec -it isle-apache-ld bash -c "mkdir /tmp/artifacts"
