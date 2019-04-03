@@ -2,7 +2,7 @@ language: minimal
 # because we edit /etc/hosts
 sudo: required
 # gives us a prefix function to handle no-output situations up to X minutes
-install: travis_wait mvn install
+# install: travis_wait mvn install
 
 branches:
   only:
