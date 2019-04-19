@@ -42,7 +42,7 @@ services:
     environment:
       - JAVA_MAX_MEM=768M
       - JAVA_MIN_MEM=128M
-    env_file: 
+    env_file:
       - tomcat.env
       - .env
     networks:
@@ -89,7 +89,7 @@ services:
     environment:
       - JAVA_MAX_MEM=512M
       - JAVA_MIN_MEM=0
-    env_file: 
+    env_file:
       - tomcat.env
       - .env
     networks:
@@ -111,17 +111,22 @@ services:
     #   context: ./images/isle-apache
     image: islandoracollabgroup/isle-apache:1.1
     container_name: isle-apache-${CONTAINER_SHORT_ID}
-    env_file: 
+    environment:
+      - PULL_ISLE_BUILD_TOOLS=true # Defaults to true.
+    env_file:
       - .env
     networks:
       isle-internal:
+        # aliases:
+        #   - ${BASE_DOMAIN}
     depends_on:
       - mysql
       - fedora
       - solr
       - traefik
     volumes:
-      - isle-apache-data:/var/www/html
+      # - isle-apache-data:/var/www/html
+      - ./data/isle-apache-data:/var/www/html
       - ./logs/apache/httpd:/var/log/apache2
       - ./logs/apache/fits:/var/log/fits
     labels:
@@ -147,6 +152,30 @@ services:
       - traefik.port=8080
       - traefik.enable=true  ## NOT SAFE FOR PRODUCTION! ##
       - traefik.frontend.rule=Host:admin.${BASE_DOMAIN};
+
+  # ref: https://bitbucket.org/commonmedia/whitman.localdomain/src/master/docker-compose.yml
+  chrome:
+    image: selenium/node-chrome:3.11.0-dysprosium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - apache
+      - hub
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=hub
+      - HUB_PORT_4444_TCP_PORT=4444
+    container_name: bd-ld-chrome
+    networks:
+      - isle-internal
+
+  # ref: https://bitbucket.org/commonmedia/whitman.localdomain/src/master/docker-compose.yml
+  hub:
+    image: selenium/hub:3.11.0-dysprosium
+    ports:
+      - "4444:4444"
+    container_name: bd-ld-hub
+    networks:
+      - isle-internal
 
 # Defined networks
 networks:
