@@ -4,7 +4,7 @@ docker-compose pull
 docker-compose up -d
 say "Docker is up"
 sleep 40
-set -x && docker exec -it isle-apache-ld bash -c "/utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh"
+set -x && docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh
 docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/mjordan/islandora_batch_with_derivs.git"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch_with_derivs"
@@ -20,7 +20,6 @@ say "Samples ingested"
 docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
 # docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/sites/behat/debug/logs"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install"
-
 say "Ready for testing"
 docker-compose down
 docker-compose up -d
