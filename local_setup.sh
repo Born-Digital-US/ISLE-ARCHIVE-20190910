@@ -18,11 +18,17 @@ git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-a
 docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
 say "Samples ingested"
 docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
-# docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/sites/behat/debug/logs"
+docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install"
 say "Ready for testing"
 docker-compose down
 docker-compose up -d
 sleep 300
+
+
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=travis --verbose"
 say "Testing complete"
+
+# ADDITIONAL COMMAND NOTES
+# RUN ONE SCENARIO by name
+## php behat --name="Viewing newspaper root"
