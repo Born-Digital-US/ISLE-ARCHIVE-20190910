@@ -20,15 +20,25 @@ say "Samples ingested"
 docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
 docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install"
-say "Ready for testing"
+say "Ready for testing" # TODO: are the next restart commands really necessary?
 docker-compose down
 docker-compose up -d
 sleep 300
 
-
-docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=travis --verbose"
+# service tests first
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=solr --verbose"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=traefik --verbose"
+# more tk
+# apache / islandora tests last
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --verbose"
 say "Testing complete"
 
 # ADDITIONAL COMMAND NOTES
 # RUN ONE SCENARIO by name
 ## php behat --name="Viewing newspaper root"
+# RUN THE TESTS FOR SERVICES by targeting each service profile:
+## php behat --profile="traefik"
+## php behat --profile="solr"
+# NOTE that the default profile targets @apache tagged tests
+## php behat
+#
