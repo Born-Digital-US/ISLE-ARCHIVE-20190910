@@ -21,9 +21,9 @@ docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/
 docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install"
 say "Ready for testing" # TODO: are the next restart commands really necessary?
-docker-compose down
-docker-compose up -d
-sleep 300
+# docker-compose down
+# docker-compose up -d
+# sleep 300
 
 # service tests first
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=solr --verbose"
