@@ -14,7 +14,7 @@ docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islan
 docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
 say "Ingest dependencies are installed"
 # docker cp isle-ingest-samples isle-apache-ld:/var/www/html/bd-samples
-git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
+git clone git@github.com:Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
 docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
 say "Samples ingested"
 docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
