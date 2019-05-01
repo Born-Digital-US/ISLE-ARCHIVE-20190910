@@ -126,9 +126,9 @@ services:
       - traefik
     volumes:
       # - isle-apache-data:/var/www/html
-      - ./data/isle-apache-data:/var/www/html
-      - ./logs/apache/httpd:/var/log/apache2
-      - ./logs/apache/fits:/var/log/fits
+      - ./data/isle-apache-data:/var/www/html:cached
+      # - ./logs/apache/httpd:/var/log/apache2
+      # - ./logs/apache/fits:/var/log/fits
     labels:
       - traefik.docker.network=${COMPOSE_PROJECT_NAME}_isle-internal
       - traefik.enable=true
