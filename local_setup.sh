@@ -20,6 +20,7 @@ say "Samples ingested"
 docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
 docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay"
 say "Ready for testing" # TODO: are the next restart commands really necessary?
 # docker-compose down
 # docker-compose up -d
