@@ -158,6 +158,7 @@ services:
     image: selenium/node-chrome:3.141.59-neon
     volumes:
       - /dev/shm:/dev/shm
+      - ./data/isle-apache-data:/var/www/html:ro
     depends_on:
       - apache
       - hub
@@ -172,6 +173,7 @@ services:
   #   image: selenium/node-firefox:3.141.59-neon
   #   volumes:
   #     - /dev/shm:/dev/shm
+  #     - ./data/isle-apache-data:/var/www/html:ro
   #   depends_on:
   #     - hub
   #     - apache
