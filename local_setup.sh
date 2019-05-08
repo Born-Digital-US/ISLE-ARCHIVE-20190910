@@ -12,7 +12,11 @@ docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en isl
 docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_newspaper_batch"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/MarcusBarnes/islandora_compound_batch.git"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
-say "Ingest dependencies are installed"
+say "Batch Ingest dependencies are installed"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/mnylc/islandora_multi_importer.git"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora/islandora_multi_importer &&  composer install"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush en islandora_multi_importer -y"
+say "IMI dependencies installed"
 # docker cp isle-ingest-samples isle-apache-ld:/var/www/html/bd-samples
 git clone git@github.com:Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
 docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
