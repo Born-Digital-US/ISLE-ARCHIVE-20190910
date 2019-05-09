@@ -33,19 +33,8 @@ docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Bat
 # sleep 300
 
 # service tests first
-docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=solr --verbose"
-docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=traefik --verbose"
-# more tk
-# apache / islandora tests last
-docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --verbose"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/ && chmod 700 scripts/run-tests.sh && drush en simpletest -y"
+docker exec -it isle-apache-ld bash -c "cp /var/www/html/isle-ingest-samples/behat/test_config.ini /var/www/html/sites/all/modules/islandora/islandora/tests/"
+docker exec -it isle-apache-ld bash -c "chmod 775 /var/www/html/isle-ingest-samples/filter-drupal.xml"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --help"
 # say "Testing complete"
-
-# ADDITIONAL COMMAND NOTES
-# RUN ONE SCENARIO by name
-## php behat --name="Viewing newspaper root"
-# RUN THE TESTS FOR SERVICES by targeting each service profile:
-## php behat --profile="traefik"
-## php behat --profile="solr"
-# NOTE that the default profile targets @apache tagged tests
-## php behat
-#
