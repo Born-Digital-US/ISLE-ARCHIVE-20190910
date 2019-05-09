@@ -19,12 +19,14 @@ docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush en islandora_m
 # say "IMI dependencies installed"
 
 git clone git@github.com:Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
-docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
-# say "Samples ingested"
 docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
 docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install"
 docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
+
+docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
+# say "Samples ingested"
+
 # say "Ready for testing" # TODO: are the next restart commands really necessary?
 # docker-compose down
 # docker-compose up -d
