@@ -156,7 +156,7 @@ services:
   # ref: https://bitbucket.org/commonmedia/whitman.localdomain/src/master/docker-compose.yml
   chrome:
     image: selenium/node-chrome:3.11.0-dysprosium # compass uses this one
-    image: selenium/node-chrome:3.141.59-neon # latest
+    # image: selenium/node-chrome:3.141.59-neon # latest
     volumes:
       - /dev/shm:/dev/shm
       - ./data/isle-apache-data:/var/www/html:ro
@@ -170,8 +170,10 @@ services:
     container_name: bd-ld-chrome
     networks:
       - isle-internal
+  
   firefox:
-    image: selenium/node-firefox:3.141.59-neon
+    image: selenium/node-chrome:3.11.0-dysprosium # compliant with the compass version
+    # image: selenium/node-firefox:3.141.59-neon # latest
     volumes:
       - /dev/shm:/dev/shm
       - ./data/isle-apache-data:/var/www/html:ro
@@ -187,8 +189,8 @@ services:
 
   # ref: https://bitbucket.org/commonmedia/whitman.localdomain/src/master/docker-compose.yml
   hub:
-    image: selenium/hub:3.141.59-neon
-    # selenium/hub:3.11.0-dysprosium # compass uses this one
+    image: selenium/hub:3.11.0-dysprosium # compass uses this one
+    # image: selenium/hub:3.141.59-neon # latest
     ports:
       - "4444:4444"
     container_name: bd-ld-hub
