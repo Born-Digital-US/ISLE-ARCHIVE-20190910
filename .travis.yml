@@ -20,24 +20,6 @@ services:
 addons:
   chrome: stable
 
-
-
-
-docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
-# say "Samples ingested"
-
-# say "Ready for testing" # TODO: are the next restart commands really necessary?
-# docker-compose down
-# docker-compose up -d
-# sleep 300
-
-# service tests first
-docker exec -it isle-apache-ld bash -c "cd /var/www/html/ && chmod 700 scripts/run-tests.sh && drush en simpletest -y"
-docker exec -it isle-apache-ld bash -c "cp /var/www/html/isle-ingest-samples/behat/test_config.ini /var/www/html/sites/all/modules/islandora/islandora/tests/"
-docker exec -it isle-apache-ld bash -c "chmod 775 /var/www/html/isle-ingest-samples/filter-drupal.xml"
-docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --help"
-# say "Testing complete"
-
 before_install:
   - mkdir data/isle-apache-data
   - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
@@ -73,6 +55,12 @@ before_install:
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
 
 script:
+  # # service tests first
+  # docker exec -it isle-apache-ld bash -c "cd /var/www/html/ && chmod 700 scripts/run-tests.sh && drush en simpletest -y"
+  # docker exec -it isle-apache-ld bash -c "cp /var/www/html/isle-ingest-samples/behat/test_config.ini /var/www/html/sites/all/modules/islandora/islandora/tests/"
+  # docker exec -it isle-apache-ld bash -c "chmod 775 /var/www/html/isle-ingest-samples/filter-drupal.xml"
+  # docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --help"
+  # # say "Testing complete"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags services --verbose"
   # - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=traefik --verbose"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags apache --verbose"
