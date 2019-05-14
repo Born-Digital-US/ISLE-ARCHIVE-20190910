@@ -20,8 +20,27 @@ services:
 addons:
   chrome: stable
 
+
+
+
+docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
+# say "Samples ingested"
+
+# say "Ready for testing" # TODO: are the next restart commands really necessary?
+# docker-compose down
+# docker-compose up -d
+# sleep 300
+
+# service tests first
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/ && chmod 700 scripts/run-tests.sh && drush en simpletest -y"
+docker exec -it isle-apache-ld bash -c "cp /var/www/html/isle-ingest-samples/behat/test_config.ini /var/www/html/sites/all/modules/islandora/islandora/tests/"
+docker exec -it isle-apache-ld bash -c "chmod 775 /var/www/html/isle-ingest-samples/filter-drupal.xml"
+docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --help"
+# say "Testing complete"
+
 before_install:
-  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git
+  - mkdir data/isle-apache-data
+  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
   - mv docker-compose.yml docker-compose.yml.default
   - cp isle-ingest-samples/docker-compose.yml docker-compose.yml
   - docker-compose pull
@@ -35,21 +54,25 @@ before_install:
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_newspaper_batch"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/MarcusBarnes/islandora_compound_batch.git"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
-  - docker cp isle-ingest-samples isle-apache-ld:/var/www/html/bd-samples
+  # - docker cp isle-ingest-samples isle-apache-ld:/var/www/html/bd-samples
   - sudo -- sh -c "echo 127.0.0.1 isle.localdomain >> /etc/hosts"
-  - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
+
+  # NOTE: we're not doing ingests here any more!
+  #- docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
   # full ingest
   # - travis_wait 61 sleep infinity && docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html 1" # now run the ORC
   # - docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
   # partial ingest
   # - docker exec -it isle-apache-ld bash -c "head -n40 /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh > /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh && sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh /var/www/html"
-  - docker exec -it isle-apache-ld bash -c "mv /var/www/html/bd-samples/behat /var/www/html/sites/. && mkdir /var/www/html/sites/behat/debug/logs"
+
+  - docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat && chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat" # symlink up to the ingest samples location
+  - docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
   # - docker exec -it isle-apache-ld bash -c "composer global require drush/drush:7.*" # OK, this isn't needed and is actually bad
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && rm composer.lock && composer install "
+  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
   # - docker exec -it isle-apache-ld bash -c "mkdir /tmp/artifacts"
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay"
+  - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
 
 script:
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=solr --verbose"
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=traefik --verbose"
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --verbose"
+  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags services --verbose"
+  # - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --profile=traefik --verbose"
+  - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags apache --verbose"
