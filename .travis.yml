@@ -21,7 +21,7 @@ addons:
   chrome: stable
 
 before_install:
-  - mkdir data/isle-apache-data
+  # - mkdir data/isle-apache-data
   - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
   - mv docker-compose.yml docker-compose.yml.default
   - cp isle-ingest-samples/docker-compose.yml docker-compose.yml
