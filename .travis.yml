@@ -56,7 +56,7 @@ before_install:
   # - docker exec -it isle-apache-ld bash -c "mkdir /tmp/artifacts"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
 
-  - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -u 1 islandora_batch_with_derivs_preprocess --key_datastream=MODS --scan_target=/var/www/html/isle-ingest-samples/Batches-by-CModel/Collections/files --use_pids=true --namespace=samples --parent=islandora:root --content_models=islandora:collectionCModel
+  - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -u 1 islandora_batch_with_derivs_preprocess --key_datastream=MODS --scan_target=/var/www/html/isle-ingest-samples/Batches-by-CModel/Collections/files --use_pids=true --namespace=samples --parent=islandora:root --content_models=islandora:collectionCModel"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -u 1 islandora_batch_ingest"
 
 script:
