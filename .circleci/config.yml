@@ -28,6 +28,7 @@ jobs:
           command: |
             set -x
             docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh
+          no_output_timeout: 20m
       - run:
           name: Drush en dependencies
           command: |
@@ -40,7 +41,7 @@ jobs:
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
             sudo -- sh -c "echo 127.0.0.1 isle.localdomain >> /etc/hosts"
-
+          no_output_timeout: 20m
       - run:
           name: Set up for BEHAT on remote server
           command: |
