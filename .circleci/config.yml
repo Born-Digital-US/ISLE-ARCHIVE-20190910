@@ -73,7 +73,7 @@ jobs:
       # - run: sleep 40
       - run:
           name: Actually run the behat tests
-          command: docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags apache --verbose"
+          command: docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags apache"
       - run:
           name: Move artifacts
           command: |
