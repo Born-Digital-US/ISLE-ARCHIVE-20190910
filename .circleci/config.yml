@@ -40,18 +40,7 @@ jobs:
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
             sudo -- sh -c "echo 127.0.0.1 isle.localdomain >> /etc/hosts"
-      # - when:
-      #     condition: <<parameters.full_ingest>>
-      #     steps:
-      #       - run:
-      #           name: Run ALL ingests
-      #           command: |
-      #             docker cp ~/born-digital/data/bd-samples isle-apache-ld:/var/www/html/bd-samples
-      #             docker exec -it isle-apache-ld bash -c "sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh /var/www/html"
-      #           no_output_timeout: 30m
-      # - unless:
-      #     condition: <<parameters.full_ingest>>
-      #     steps:
+
       - run:
           name: Set up for BEHAT on remote server
           command: |
