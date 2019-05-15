@@ -47,7 +47,7 @@ before_install:
   # partial ingest
   # - docker exec -it isle-apache-ld bash -c "head -n40 /var/www/html/bd-samples/Batches-by-CModel/ingest_samples.sh > /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh && sh /var/www/html/bd-samples/Batches-by-CModel/ingest_samples_brief.sh /var/www/html"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html/ && git clone https://github.com/Born-Digital-US/isle-ingest-samples.git"
-  - docker exec -it isle-apache-ld bash -c "ls -lah /var/www/html/"
+  # - docker exec -it isle-apache-ld bash -c "ls -lah /var/www/html/"
   - docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-ingest-samples/behat /var/www/html/sites/behat" # symlink up to the ingest samples location
   - docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/isle-ingest-samples/behat"
   - docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-ingest-samples/behat/debug/logs/"
