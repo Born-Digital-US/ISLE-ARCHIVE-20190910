@@ -22,13 +22,14 @@ addons:
 
 before_install:
   # - mkdir data/isle-apache-data
-  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
+  - git clone https://github.com/Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/
   - mv docker-compose.yml docker-compose.yml.default
   - cp data/isle-apache-data/isle-ingest-samples/docker-compose.yml docker-compose.yml
   - docker-compose pull
   - docker-compose up -d
   - sleep 40
-  - set -x && docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh
+  # - set -x &&
+  - docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/mjordan/islandora_batch_with_derivs.git"
   - docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch_with_derivs"
