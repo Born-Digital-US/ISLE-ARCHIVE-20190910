@@ -4,22 +4,22 @@ version: '3'
 ## Updated 2019-03-27 - Release 1.1.1 (@ 1.1.1)
 
 services:
-  isle-portainer: ## Renamed to avoid conflicts on systems/servers with portainer already running.
-    image: portainer/portainer
-    container_name: isle-portainer-${CONTAINER_SHORT_ID}
-    command: -H unix:///var/run/docker.sock --no-auth
-    networks:
-      - isle-internal
-    ports:
-      - "9010:9000" ## Remapped to avoid conflicts on systems/servers with portainer already running.
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - isle-portainer-data:/data
-    labels:
-      - traefik.port=9000
-      - traefik.docker.network=${COMPOSE_PROJECT_NAME}_isle-internal
-      - traefik.enable=true  ## NOT SAFE FOR PRODUCTION! ##
-      - "traefik.frontend.rule=Host:portainer.${BASE_DOMAIN};"
+  # isle-portainer: ## Renamed to avoid conflicts on systems/servers with portainer already running.
+  #   image: portainer/portainer
+  #   container_name: isle-portainer-${CONTAINER_SHORT_ID}
+  #   command: -H unix:///var/run/docker.sock --no-auth
+  #   networks:
+  #     - isle-internal
+  #   ports:
+  #     - "9010:9000" ## Remapped to avoid conflicts on systems/servers with portainer already running.
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - isle-portainer-data:/data
+  #   labels:
+  #     - traefik.port=9000
+  #     - traefik.docker.network=${COMPOSE_PROJECT_NAME}_isle-internal
+  #     - traefik.enable=true  ## NOT SAFE FOR PRODUCTION! ##
+  #     - "traefik.frontend.rule=Host:portainer.${BASE_DOMAIN};"
 
   mysql:
     image: islandoracollabgroup/isle-mysql:1.1.1
@@ -148,7 +148,7 @@ volumes:
   isle-mysql-log:
   isle-solr-data:
   isle-apache-data:
-  isle-portainer-data:
+  # isle-portainer-data:
   isle-fedora-datastreamStore:
   isle-fedora-objectStore:
   isle-fedora-resourceIndex:
