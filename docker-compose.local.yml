@@ -16,7 +16,7 @@ services:
       - isle-internal
     volumes:
       - isle-db-data:/var/lib/mysql
-      - isle-mysql-log:/var/log/mysql
+      # - isle-mysql-log:/var/log/mysql
 
   fedora:
     image: islandoracollabgroup/isle-fedora:1.1.1
@@ -25,7 +25,6 @@ services:
       - JAVA_MAX_MEM=768M
       - JAVA_MIN_MEM=128M
     env_file:
-      - tomcat.env
       - local.env
     networks:
       - isle-internal
@@ -40,8 +39,8 @@ services:
       - isle-fedora-resourceIndex:/usr/local/fedora/data/resourceIndex # Migrators change this to your local RI folder.
       - isle-fedora-activemq:/usr/local/fedora/data/activemq-data # Migrators change this to your local MQ folder.
       - isle-fedora-XACML:/usr/local/fedora/data/fedora-xacml-policies
-      - ./logs/fedora/fcrepo:/usr/local/fedora/server/logs
-      - ./logs/fedora/tomcat:/usr/local/tomcat/logs
+      # - ./logs/fedora/fcrepo:/usr/local/fedora/server/logs
+      # - ./logs/fedora/tomcat:/usr/local/tomcat/logs
 
   solr:
     image: islandoracollabgroup/isle-solr:1.1.1
@@ -50,7 +49,6 @@ services:
       - JAVA_MAX_MEM=512M
       - JAVA_MIN_MEM=0
     env_file:
-      - tomcat.env
       - local.env
     networks:
       - isle-internal
@@ -60,7 +58,7 @@ services:
       - mysql
     volumes:
       - isle-solr-data:/usr/local/solr
-      - ./logs/solr:/usr/local/tomcat/logs
+      # - ./logs/solr:/usr/local/tomcat/logs
 
   image-services:
     image: islandoracollabgroup/isle-imageservices:1.1.1
@@ -69,7 +67,6 @@ services:
       - JAVA_MAX_MEM=512M
       - JAVA_MIN_MEM=0
     env_file:
-      - tomcat.env
       - local.env
     networks:
       - isle-internal
@@ -79,7 +76,7 @@ services:
     ports:
       - "8083:8080"
     volumes:
-      - ./logs/imageservices:/usr/local/tomcat/logs
+      # - ./logs/imageservices:/usr/local/tomcat/logs
     labels:
       - traefik.docker.network=${COMPOSE_PROJECT_NAME}_isle-internal
       - traefik.enable=false
@@ -99,8 +96,8 @@ services:
       - traefik
     volumes:
       - isle-apache-data:/var/www/html
-      - ./logs/apache/httpd:/var/log/apache2
-      - ./logs/apache/fits:/var/log/fits
+      # - ./logs/apache/httpd:/var/log/apache2
+      # - ./logs/apache/fits:/var/log/fits
     labels:
       - traefik.docker.network=${COMPOSE_PROJECT_NAME}_isle-internal
       - traefik.enable=true
@@ -134,7 +131,7 @@ networks:
 
 volumes:
   isle-db-data:
-  isle-mysql-log:
+  # isle-mysql-log:
   isle-solr-data:
   isle-apache-data:
   isle-fedora-datastreamStore:
