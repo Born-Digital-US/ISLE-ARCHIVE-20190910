@@ -10,8 +10,8 @@ services:
     #   context: ../images/isle-mysql
     image: islandoracollabgroup/isle-mysql:1.1.1 # TODO: maybe remove numbers
     container_name: isle-mysql-${CONTAINER_SHORT_ID}
-    environment:
-      - MYSQL_ROOT_PASSWORD
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD
     networks:
       - isle-internal
     volumes:
