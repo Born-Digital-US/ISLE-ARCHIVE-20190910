@@ -1,8 +1,82 @@
+**Recommendations on File structure**:
+
+* Identify if this a Page 1/4 potential scenario
+
+* Change the file name from `install-migration.md` to `migration.md` or `migrate.md`
+* File names should contain the topic i.e. migration or migrate not "install"
+* Order the files in the `migrate` directory. 
+  * Unclear what order and not everyone comes from the "pretty"docs URL. 
+  * Endusers might review docs in the Github.com repo (online / browser) or within a cloned ISLE project (IDE or cli)
+
+```bash
+├── migrate
+│   ├── export-checklist.md
+│   ├── install-migration.md
+│   ├── merge-checklist.md
+│   └── reindex-process.md
+```
+
+becomes
+
+```bash
+├── migrate
+│   ├── migrate-01.md
+│   ├── migrate-export-checklist-02.md
+│   ├── migrate-merge-checklist-03.md
+│   └── migrate-reindex-04.md
+```
+
+### Ideal Outline of this document
+
+This document will guide an end-user:
+
+* Fork the current ISLE project
+* Create the git upstreams outlined in the [REMOTE Server ISLE Installation](https://islandora-collaboration-group.github.io/ISLE/install/install-server/)
+* Edit and commit the ISLE configurations to setup a `Staging` environment in git
+* Clone this setup to the ISLE Host server
+* Create a temporary data storage directory
+  * Review and follow the [Migration Export Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/export-checklist/) for data locations, user names etc to determine what production data needs to be copied over.
+  * Copy the current production data to the temporary data storage directory on the ISLE host server
+* Review and follow the [Migration Merge Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/merge-checklist/) for configuration files locations etc to determine what production configuration files need to be copied over.
+  * Create a temporary configuration storage directory on your local workstation
+  * Copy over the appropriate production configuration files to be edited and merged
+  * Review and follow the [Migration Merge Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/merge-checklist/) for the list of files to edit and merge. 
+    * Solr files - Diff process for your potentially customized files and ISLE's stock. 
+      * How to bind mount this file for customization
+    * Gsearch transforms
+      * `foxmltoSolr.xslt` Diff process for your potentially customized file and ISLE's stock. 
+        * How to bind mount this file for customization
+      * Additional files in the `islandora_transforms` directory - Diff process for your potentially customized file and ISLE's stock. 
+        * How to bind mount this file for customization
+  * Upon finishing merge process, git commit process to ISLE project directory
+* Clone / git pull new changes to current ISLE project directory on `Staging` Server
+* Move production data directories to locations that match the ISLE environment docker-compose.yml volume paths and definitions. 
+* docker-compose up -d all containers
+* Run `fix-permission.sh` script on Apache container
+* Import the Production MySQL database
+* Use drush to change the admin password
+* Use drush st to check basic connectivity between Drupal site and MySQL database
+* Check basic connectivity of site
+* Run Fedora reindex process
+* Run Solr reindex process
+* QC site
+
+* Repeat entire process for `Production` environment
+  * Identify steps that can be fast tracked or not repeated.
+
+---
+
 # Migrate to ISLE Environment
 
 _Expectations:  It may take at least **8 hours or more** to read this documentation and complete this installation. Please proceed slowly._
 
-This will help you migrate your existing production Islandora 7.x environment to an ISLE environment for easily maintaining Islandora. This documentation will help you identify and copy your institution's preexisting Islandora data, files, and themes (including your data volume, Drupal site(s) and theme(s), and commonly customized xml and xslt files) to your ISLE environment.
+This guide will help you migrate your existing production Islandora 7.x environment to an ISLE environment (`Staging`) and/or (`Production`) or both.
+
+This guide will also help you identify and copy your institution's preexisting Islandora data, files, and themes (including your data volume, Drupal site(s) and theme(s), and commonly customized xml and xslt files) to your ISLE environment using two key checklists:
+
+* [Migration Export Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/export-checklist/) for data locations, user names etc. 
+
+* [Migration Merge Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/merge-checklist/) for how to edit and merge in customizations from your current non-ISLE system to ISLE.
 
 Please post questions to the public [Islandora ISLE Google group](https://groups.google.com/forum/#!forum/islandora-isle), or subscribe to receive emails. The [Glossary](../appendices/glossary.md) defines terms used in this documentation.
 
@@ -10,87 +84,28 @@ Please post questions to the public [Islandora ISLE Google group](https://groups
 
 ## Assumptions / Prerequisites
 
-* You have already completed the [Hardware Requirements](../install/host-hardware-requirements.md), [Software Dependencies](../install/host-software-dependencies.md) for your host server, and [Remote Server ISLE Installation](../install/install-server.md). 
-
-* **Never ever share or post your .env files publicly.** The .env and tomcat.env files ("Docker Environment files") are your primary resources for customizing your ISLE stack. These .env files contain passwords and usernames and must be treated with the utmost care.
-
-* You have disk space on - or mounted to - the host server large enough to store a **full copy** of your fedora data store.
+* Enough disk space on - or mounted to - the host server large enough to store a **full copy** of your fedora data store.
+  * Please refer to the [Migration Export Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/export-checklist/) for data locations and methods to determine file sizes etc.
 
 * You have sufficient storage available for the ISLE host server to accommodate a working copy of a production Islandora's associated configurations and data.
+  * Please refer to the [Migration Export Checklist](https://islandora-collaboration-group.github.io/ISLE/migrate/export-checklist/) for data locations and methods to determine file sizes etc.
 
----
+* You have already completed:
+  * the ISLE Host Server [Hardware Requirements](../install/host-hardware-requirements.md)
+  * the ISLE Host Server [Software Dependencies](../install/host-software-dependencies.md)
+  * the [ISLE Configuration Setup](../install/install-server.md).
+    * You will have edited the involved files to fit the environment you are setting up e.g. `Staging` or `Production`
+    * This newly edited setup will have been cloned to the ISLE Host Server that you want to migrate to preferably starting with `Staging` and then repeating this edit process for `Production`
 
-## THIS SECTION IS IN DEVELOPMENT. PLEASE COME BACK SOON.
+* **Please note:** It is strongly recommended that:
+  
+  * During this migration process you create new passwords for most if not all of your users and services. This is to ensure the following, good security and ensuring that your new system isn't attempting to connect to your old but still running Production system. This process will guarantee a standalone unique ISLE system.
+  * Build your `Staging` ISLE system first
+  * Build your `Production` ISLE system next, having learned what changes to make from the previous `Staging` ISLE configuration / environment build process
 
-<!-- OLD STUFF
-**ON your local laptop / workstation:**
-* Create a directory named `yourdomain-config` (where "yourdomain" is your server domain name)
-     * Example:  `project-name.yourdomain.edu-config`
-* Copy all the contents of the ISLE directory to the newly created directory
-* `cd` into the newly copied and renamed `yourdomain-config` directory and type:
-    * `git init`
-    * _Initiates this directory as a code repository._
-* Type: `git remote add NameOfYourRepository URLofYourRepository`
-    * Connects your local repository to the remote you set up in the above steps.
-    * **NOTE:** replace "NameOfYourRepository" and "URLofYourRepository" with the name of your repository and its URL
-* You are now ready to perform the customization edits in this directory (you can use a text editor of choice now don't have to stay in terminal - just locate the folder in the finder and open file in text editor)
--->
+* **Warning - Never ever share or post your .env files publicly.** The .env and tomcat.env files ("Docker Environment files") are your primary resources for customizing your ISLE stack. These .env files contain passwords and usernames and must be treated with the utmost care.
 
----
-
-## Migrate Only: Finding Usernames and Passwords
-* You have usernames and passwords for key parts of your current Islandora production environment which will be used **for** the migration. The next steps will walk you through finding this information.
-
-    0. Login to your current Islandora production server. If your current production environment is located across multiple servers, you may need to check more than one server to find this information.
-    1. To find your Drupal MySQL username, password, and database run the following command:
-      * `grep --include=filter-drupal.xml -rnw -e 'dbname.*user.*password.*"' / 2>/dev/null`   
-      * Example output:
-         ```connection server="localhost" port="3306" dbname="**islandora**" user="**drupalIslandora**" password="**Kjs8n5zQXfPNhZ9k**" ```
-
-         1. Username: copy the value from `user=`
-         2. Password: copy the value from `password=`
-         3. Database: copy the value from `dbname=`
-
-    2. To find your Fedora MySQL username, password, and database run the following command:
-      * `grep --include=fedora.fcfg -rnw -e 'name="dbUsername"' -e 'name="dbPassword"' -e 'name="jdbcURL"' / 2>/dev/null`
-      * This command _will_ print multiple lines. The first three lines are important but please save the rest (just in case).
-      * Example output:
-          ```param name="dbUsername" value="**fedoraDB**"  
-          param name="jdbcURL" value="jdbc:mysql://localhost/**fedora3**?useUnicode=true&amp;amp;characterEncoding=UTF-8&amp;amp;autoReconnect=true"  
-          param name="dbPassword" value="**zMgBM6hGwjCeEuPD**"
-         ```
-         1. Username: Copy the value from `dbUsername value=`
-         * Password: Copy the value from `dbPassword value=`
-         * Database: Copy from the value `jdbcURL value=` the database name which is directly between the "/" and the only "?"
-
-* You know where your Fedora, Drupal (Islandora), and Solr data folders are located.
-
-    0. Login to your current Islandora production server. If your current production environment is located across multiple servers, you may need to check more than one server to located these data folders.
-
-    1. Finding your Fedora data folder (common locations include `/usr/local/fedora/data` or `/usr/local/tomcat/fedora/data`):
-
-          Run a find command: `find / -type d -ipath '*fedora/data' -ls  2>/dev/null`
-
-    2. Finding your Drupal data folder (common location is under `/var/www/` likely in a sub-folder; e.g., html, islandora, etc.)
-
-          Run a grep command: `grep --include=index.php -rl -e 'Drupal' / 2>/dev/null`
-
-    3. Finding your Solr data folder (common location: `/usr/local/solr`, `/usr/local/tomcat/solr`, or `/usr/local/fedora/solr`)
-
-          Run a find command: `find / -type d -ipath '*solr/*/data' -ls  2>/dev/null`
-
-    4. Finding your FedoraGSearch data (i.e. transforms) folder
-
-          Run a find command: `find / -type d -ipath '*web-inf/classes/fgsconfigfinal' -ls 2>/dev/null`
-
-* You have a SQL dump (export) of the current production site's Drupal database. Ensure that the contents of any `cache` table are not exported.
-    1. Login to your current Islandora production server and navigate to your Drupal data folder.
-
-        Run the following command to generate a SQL dump of your Drupal database: `mysqldump -u {DRUPAL_USERNAME} -p {DRUPAL_DATABASE_NAME} | gzip > drupal.sql.gz`
-
-
-**Finally also please note:** Instructions from this guide and it's associated checklists call for you to **COPY** data from your current production Islandora environment to your ISLE Host Server or local computer. You work from these copies to build your ISLE environment. In some cases, you'll need to copy configurations down to your local computer (`Local ISLE config laptop`) and merge contents as directed. In other cases, due to the size of the data e.g. Fedora data you will copy directly to the ISLE Host server (`Remote ISLE Host server`). You will note where you have stored copies of files/data in a docker-compose.yml file. You will store your configured files in a git repository and use that to deploy to the ISLE host server.
-
+Instructions from this guide and it's associated checklists may call for you to **COPY** data from your current production server and / or appropriate Islandora environment to your ISLE Host Server or local computer. You work from this copied data to build your ISLE environment. In some cases, you'll need to copy configurations down to your local computer (`Local ISLE config laptop`) and edit or merge contents as directed. In other cases, due to the size of the data e.g. Fedora data you will copy directly to the ISLE Host server (`Remote ISLE Host server`). You will note where you have stored copies of files/data in a docker-compose.yml file. You will store your configured files in a git repository and use that to deploy to the ISLE host server.
 
 ### Create Data Storage Directory
 
@@ -111,6 +126,8 @@ This area will be where all current Islandora production data is to be stored. T
 ---
 
 ### Migration Export Checklist
+
+**WARNING** - This section seems to have fragments of instructions that are not refered to anywhere in the documentation. Cleanup required here.
 
 * In the `/opt/ISLE/yourdoman-config` directory create a new sub-directory (you can call this `current_prod_islandora_config`)
 
