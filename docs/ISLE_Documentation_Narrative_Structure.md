@@ -11,7 +11,8 @@ Create the starter page that is printed "evolution" of an ISLE user and their "l
   * Building ISLE / Maintainers
 
 Introduction 
-* Demo site  - no experience potentially with Islandora
+* Demo site  
+  * User case: 1st use case, no experience potentially with Islandora, kicking tires on ISLE
   * Requirements
   * Installation on Laptop and associated usage
   * Islandora
@@ -23,7 +24,8 @@ Introduction
     * SSLs types (Self-Signed)
     * Domain information
 
-* Local development - 1st use case
+* Local development 
+  * User case: 2nd use case, Developing Drupal code, testing objects and Solr schemas
   * Requirements
   * Installation on Laptop and associated usage
   * Workflows
@@ -36,7 +38,8 @@ Introduction
   * Domain information
 
 Level up - Intermediate
-* Staging site - 3rd use case (Not public, with almost finished code, Fedora data refreshed from Production)
+* Staging site - 
+  * Use case: 3rd use case (Not public, with almost finished code, Fedora data refreshed from Production systems).
   * Requirements
   * Installation on Server and associated usage
   * Introduction to workflows
@@ -77,7 +80,8 @@ Level up - Intermediate
      * Troubleshooting
 
 Level up - Intermediate
-* Production - 4th use case (Public, finished code, main Fedora data)
+* Production
+  * Use case: 4th use case (Public, finished code, main Fedora data)
   * Requirements
   * Installation on Server and associated usage
   * Data and configuration differences from `Staging`
@@ -149,6 +153,7 @@ Level up - Advanced
 
 * ISLE Maintainers
   * Building ISLE
+    * Use case: ISLE Maintainers building images or Power users rolling their own ISLE images. Dev / Beta testing code. High use of CPU, compiling etc.
     * Requirements
     * Installation on Local laptop and associated usage
   * ISLE Feature Development e.g. Phase II etc
