@@ -1,26 +1,45 @@
 # Migration Export Checklist
 
-This section is a checklist of materials to **COPY** from the current running Islandora Production server(s) to the appropriate storage location / directory in order to build your ISLE instance.
+**RECOMMENDATIONS:** 
+  * Streamline this page to have more emphasis on path location and realworld names ala the "Quick Start" model.
+  * Perhaps state the list first e.g. the table with sample / example pages with explanations at the bottom. If folks are interested, they'll move down the page, otherwise the table at the top is the actionable piece.
 
-**Please Note:** _Ubuntu / Debian style paths are used for all examples file locations below, end users might have different locations for these files HOWEVER the file and directory names etc should be roughly the same._
+## Index
+
+* Checklist overview
+  * Apache
+    * Notes
+  * Fedora
+    * Notes
+  * Gsearch
+  * MySQL
+    * Tools for Export
+  * Solr
+  * Tomcat
+
+### Checklist overview
+
+This section is a checklist of materials to **COPY** from the current running Islandora Production server(s) to the appropriate storage location / directory in order to build your ISLE environment whether it be a `Staging` or `Production` instance.
+
+**Please Note:** _Ubuntu / Debian distribution specific paths are used for all examples file locations below, end users might have different locations for these files HOWEVER the file and directory names etc should be roughly the same._
 
 **Caution**: While the ISLE Project recommends use of export methods or tools such as rsync, scp etc., it assumes that end users are familiar with them and are aware of possible dangers of improperly exporting or copying production data. Ensure adequate backups of any production system(s) are made prior to any attempts. If you are not familiar or are uncomfortable with these processes, it is highly advisable to work with an appropriate IT department.
 
-**Finally also please note:** Instructions from this checklist and the [Migrate to ISLE Environment](../migrate/install-migration.md) may call for you to **COPY** data from your running Islandora environment to a newly created folder: `yourdomain-data` on your ISLE Host Server or `current_prod_islandora_config` on your local machine. You will then work from these copies for future steps.
+**Finally also please note:** Instructions from this checklist and the [Migrate to ISLE Environment](../migrate/install-migration.md) may call for you to **COPY** data from your running Islandora environment to a newly created folder of your choice on your ISLE Host Server or on your local machine. You will then work from these copies for future steps.
 
-In some cases, you'll need to copy configurations down to your machine and merge contents as directed. (_if necessary_) In other cases, due to the size of the data e.g. Fedora data you will copy production data to the ISLE Host server (`ISLE Host server`) instead of your local machine.
+As a suggested workflow for editing the ISLE configuration, you'll need to copy various configurations down to your local machine and edit or merge contents as directed. (_if necessary_) Due to the potential size of the `Production` data i.e. the Fedora repository data, ideally you will copy that specific production data to a remote ISLE Host server with a larger amount of storage instead of your local machine which may be limited in comparison. In this context of migrating your previously non-ISLE configurations and settings to your new `Staging` and/or `Production` ISLE configuration, actual Fedora repository data isn't required.
 
-* Contents of the production Islandora Apache `html` directory should be copied to a new directory called `yourdomain-data/apache/html/` on your ISLE host server in the appropriate storage area.
+Once you've copied everything, you'll edit the new ISLE `Staging` or `Production` configuration `docker-compose.yml` file to add the actual paths to where all the copied and/or merged files and folders now reside.
 
-* Contents of the  production Islandora Fedora `data` directory should be copied to a new directory called `yourdomain-data/fedora/data/` on your ISLE host server in the appropriate storage area.
+This custom config should ultimately be checked into a git repository to deploy to the ISLE host server. This should be all you need to do for everything to work with both your copied data and merged production settings. Please review the [Git Workflow](../workflows/gitworkflow.md) page for assistance on suggested. (TO DO - make this page with directions.)
 
-Once you've copied everything, you will add pointers to where all files and folders are stored in the `docker-compose.yml` file and you will be putting this custom config in a git repository to deploy to the ISLE host server. This should be all you need to do for everything to work with both your copied data and merged production settings.
-
-**Recommend:** Having adequate storage space available for the ISLE host server to accommodate a working copy of a production Islandora's associated configurations and data.
+**Recommend:** Having adequate storage space available for the ISLE host server to accommodate a working copy of a production Islandora's associated configurations and data. See recommended storage details from the [Hardware Requirements](../install/host-hardware-requirements.md) page.
 
 ---
 
 ### Apache
+
+* Contents of the Production Apache webserver `/var/www/html` directory should be copied to a new directory on your ISLE host server in the appropriate storage area for example `yourdomain-data/apache/html/`.
 
 * Copy the following below from the Islandora Production Server(s) to the suggested directories `/current_prod_islandora_config/apache/` or `/yourdomain-data/apache/` on either your local machine or ISLE Host server.
 
@@ -40,7 +59,7 @@ This data and these configurations will be used in conjunction with an Apache co
 
 #### Apache Notes
 
-* /var/www/`html`
+* `/var/www/html`
 
     * _Entire contents unless size prohibits should be copied to a directory on the remote ISLE host server._
 
@@ -54,6 +73,8 @@ This data and these configurations will be used in conjunction with an Apache co
 
 * `yoursite.conf`
 
+    * Give Apache config paths for Ubuntu here (TO-DO)
+    
     * _File will have different name but this should be the enabled Apache vhost file of your production Islandora website._
     * _There may also be a separate vhost that uses SSL and https. Copy that too if available._
 
@@ -61,6 +82,8 @@ This data and these configurations will be used in conjunction with an Apache co
 ---
 
 ### Fedora
+
+* Contents of the  production Islandora Fedora `data` directory should be copied to a new directory (for example `yourdomain-data/fedora/data/`) on your new `Staging` or `Production` ISLE host server in the appropriate storage area.
 
 Copy the following below from the Islandora Production Server(s) to the suggested directories `current_prod_islandora_config/fedora/` or `/yourdomain-data/fedora` on either your local machine or ISLE Host server.
 
