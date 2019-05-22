@@ -75,8 +75,8 @@ services:
       - fedora
     ports:
       - "8083:8080"
-    volumes:
-      # - ./logs/imageservices:/usr/local/tomcat/logs
+    # volumes:
+    #   - ./logs/imageservices:/usr/local/tomcat/logs
     labels:
       - traefik.docker.network=${COMPOSE_PROJECT_NAME}_isle-internal
       - traefik.enable=false
@@ -95,7 +95,7 @@ services:
       - solr
       - traefik
     volumes:
-      - isle-apache-data:/var/www/html
+      - ./data/isle-apache-data:/var/www/html:cached
       # - ./logs/apache/httpd:/var/log/apache2
       # - ./logs/apache/fits:/var/log/fits
     labels:
