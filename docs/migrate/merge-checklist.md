@@ -1,6 +1,18 @@
 # Migration Merge Checklist
 
-This section is to serve as a new checklist for the editing or merging of the copied Islandora Production server(s) data and config files to the appropriate config directory on the enduser's local laptop and ultimately copied / deployed back to the new ISLE Host Server.
+This checklist is to be used during the editing or merging process of the non-ISLE Islandora Production server(s) configuration files to conform to the new ISLE setup. 
+
+This "merge" workflow typically involves:
+* copying down the configuration files to an appropriate directory on the your local laptop
+* comparing the files to newer ISLE versions
+* making edits to the ISLE configurations to reflect potential customization
+* Comment the edits in the new ISLE configurations for keeping track of customizations
+* checking in the new configurations into a git repository 
+* deploying this new setup back to your new ISLE Host Server whether it be `Production` or `Staging`.
+
+---
+
+**Recommendation**: This section needs editing. This is too much and the repeated usage of `yourdomain` is confusing.
 
 The suggested workflow is for endusers to review the Production file(s) first, make note of any settings and then make appropriate edits within the `yourdomain-config` directory to change values, add passwords or usernames etc on your local laptop with the ultimate goal of checking all results into a git repository for deploy later on the ISLE Host server.
 
@@ -10,13 +22,67 @@ Please note as per the migration guide instructions the name of this directory s
 
 While this checklist will attempt to point out most of the merge challenges or pitfalls, you may encounter unique situations depending on the edits and customizations made to your Islandora environment in the past. This is a good place to reach out to the Islandora community for assistance.
 
-**Please note:**
+## Customization Process
+
+### Signing
+
+In order to avoid issues with ISLE upgrades, it is highly recommended that when making custom edits to any configuration file, to sign the changes. This will help avoid merge conflicts in git, help endusers remember the reasons for the customizations and to help quickly locate said changes.
+
+* Intro to making edits to configuration files 
+  * (TO DO) Expand on this please.
+
+* Suggestions on how to "sign" custom edits to configuration files.
+  * Who made the edit?
+  * When did they make the edit?
+  * Why did they make the edit?
+    * This should be short 1-2 lines tops as a separate line
+
+**Example 1:**
+
+```bash
+
+code here
+
+### Customization - Institution name - Jane Doe - Date
+### This code edit solves the challenge of ...
+
+customized code here
+
+### End Customization
+
+code here
+
+```
+
+**Example 2:**
+
+```bash
+
+code here
+
+<!-- Customization - Institution name - Jane Doe - Date -->
+<!-- This code edit solves the challenge of ... -->
+
+customized code here
+
+<!-- End Customization -->
+
+code here
+
+```
+
+* Depending on the configuration file type, comment styles and conventions like `//` or `;` may be employed or enforced. 
+  * (TO DO) Make an additional checklist of file types and required commenting convention
 
 * In some cases, some of the configuration files copied from your running production Islandora may have comments (#) in them to help guide endusers to make the appropriate edits e.g. (# end user edit here)
 
 * In most cases, many of the configuration files copied from ISLE repository to `yourdomain-config` will have fake or empty settings in them. Please remove, edit or enter new values as advised.
 
 ---
+
+(TO DO) Top-level table of all areas described below. "Quick-start" version.
+
+
 ## Apache
 
 Compare, edit, merge or copy the following from the source directory `current-production-config/apache/` to:
@@ -34,46 +100,16 @@ Compare, edit, merge or copy the following from the source directory `current-pr
 
 * `html` - endusers will have **copied** this entire directory **instead** to a new directory called `yourdomain-data/apache/html/` on your remote ISLE host server in the appropriate storage area.
 
-* `settings.php` - endusers will want to edit database and user names for Drupal sites to connect properly.
-
-    * Lines 251 -253: Change the appropriate settings for the Drupal website database, associate database user name and password. Do not change the `host` settings.  
-
-    * Line 288: _Recommend adding a Drupal hash value here of 25+ alpha-numeric characters_
-
-    * Line 312: `$base_url` should be commented out as it isn't used due to the proxy.
+* `settings.php` is handled by ISLE `utility-scripts`, this is now a copy of that auto-generated process. (TO DO) Add this copying step to the `Staging` or `Production` deploy.
 
 ### Apache - Sites-Enabled
 
-Please note that endusers will take values from the `site.conf` file and flow the information as needed into the to be renamed `sample-ssl.conf` & `sample.conf` files accordingly with the domain name of your choice. This file will not be copied to yourdomain-config/apache/ for any usage.
-
-* Within the `sites-enabled` directory, rename the files `sample-ssl.conf` and `sample.conf` to your domain names - example:
-    * `project-name.yourdomain.edu_ssl.conf`
-
-    * `project-name.yourdomain.edu.conf`
-
-* Edit the previously named `sample.conf` file and change lines 3 and 4 to point to the location of your apache logs on the container - example:
-
-    * `ErrorLog /var/log/apache2/project-name.yourdomain.edu.ssl.error.log`
-
-    * `CustomLog /var/log/apache2/project-name.yourdomain.edu.ssl.access.log combined`
-
-* Edit the previously named `sample-ssl.conf` file and change lines 4 and 5 to point to the location of your apache logs on the container - example:
-
-    * `ErrorLog /var/log/apache2/project-name.yourdomain.edu.ssl.error.log`
-
-    * `CustomLog /var/log/apache2/project-name.yourdomain.edu.ssl.access.log combined`
-
-* Edit the previously named `sample-ssl.conf` file and change lines 12, 13 and 14 to point to the location of your certs on the `apache` container - example:
-
-    ```
-
-        SSLCertificateFile	/certs/sample.pem
-        SSLCertificateChainFile /certs/sample-interm.pem
-        SSLCertificateKeyFile /certs/sample-key.pem
-
-    ```
-
-* If there are any additional customizations required, you'll need to copy them into these two vhost files accordingly.
+* Make note of the domain name / URL used by Apache
+* Make note of what SSL files were previously used. 
+  * Does it make sense to continue to use these files or to use Let's Encrypt. 
+    * If yes, then copy the SSL files to `/opt/ISLE/config/proxy/ssl-certs`
+      * edit the `traefik` .toml file for file locations.
+      * (TO DO) - give more concrete paths and examples here
 
 ### Apache Optional Edits
 
@@ -98,7 +134,7 @@ Please note that endusers will take values from the `site.conf` file and flow th
 
 If need be, please refer to the **SSL certificate** section of the [Glossary](../appendices/glossary.md) for relevant terms to help guide installation.
 
-* Copy your original production SSL certificates for Apache into the `apache/ssl-certs` subdirectory. They will and should have different names than the examples provided below dependent on the ISLE environment you are setting up e.g. (_production, staging, or development_).
+* Copy your original production SSL certificates for Apache into the `/opt/ISLE/config/proxy/ssl-certs` subdirectory. They will and should have different names than the examples provided below dependent on the ISLE environment you are setting up e.g. (_production, staging, or development_).
 
     * There can be up to 2 - 3 files involved in this process.
 
@@ -127,94 +163,26 @@ If need be, please refer to the **SSL certificate** section of the [Glossary](..
 
 ## Fedora
 
+(OPTIONAL) - One can create new passwords and use default ISLE suggested users. Recommend that one only reviews to ensure that no further customization is required. Typically endusers only have custom `repository-policies` or `fedora-xacml-policies`
+
 Compare, edit, merge or copy the following from the suggested directory `current-production-config/fedora/` to:
 
 * `yourdomain-config/fedora/` on your local laptop.
 
 | Data                  | Description                   | Possible Location                | Merge, Copy or Edit Location / Destination | Copy location |
 | -------------         | -------------                 | -------------                    | -------------                              | ------------- |
-| datastreamStore       | Entire Fedora data directory  | /usr/local/fedora/data/          | yourdomain-data/fedora/data/datastreamStore       | Remote ISLE Host server  |
 | fedora-xacml-policies | Entire Fedora data directory  | /usr/local/fedora/data/          | yourdomain-data/fedora/data/fedora-xacml-policies | Remote ISLE Host server  |
-| objectStore           | Entire Fedora data directory  | /usr/local/fedora/data/          | yourdomain-data/fedora/data/objectStore           | Remote ISLE Host server  |
-| fedora.fcfg           | Fedora repository config file | /usr/local/fedora/server/config/ | yourdomain-config/fedora/ |  Local ISLE config laptop |
 | fedora-users.xml      | Fedora users config file      | /usr/local/fedora/server/config/ | yourdomain-config/fedora/ |  Local ISLE config laptop |
-| filter-drupal.xml     | Fedora Drupal filter file     | /usr/local/fedora/server/config/ | yourdomain-config/fedora/ |  Local ISLE config laptop |
 | repository-policies   | Fedora Drupal filter file     | /usr/local/fedora/server/config/ | yourdomain-config/fedora/ |  Local ISLE config laptop |
 
-### Fedora Edits
-
-* The outlined contents (above) of the production Islandora Fedora `data` directory should be copied to a new directory called `yourdomain-data/fedora/data/` on your remote ISLE host server in the appropriate storage area.
-
-    * Do not copy the following directories from the production Islandora fedora `/usr/local/fedora/data` directory.
-        * /usr/local/fedora/`data/activemq-data`
-        * /usr/local/fedora/`data/resourceIndex`
-
-* `fedora.fcfg` - endusers will want to edit the following:
-    * Line: 562 (optional) to change the `fedora_admin` username for the `fedora3` database
-
-    * Line: 598 (necessary) to enter the `fedora_admin` user password for the `fedora3` database
-
-* `fedora-users.xml` - endusers will want to edit the following:
-
-    * Lines 3, 8, 14 and 19: Add the appropriate passwords or users as needed.  
-
-* `filter-drupal.xml` - endusers will want to edit
-
-    * Line 3: Add the appropriate Drupal site database name, Drupal site database user and Drupal site database user password in between all `""`
-
-    * **Please note:** For endusers using Drupal multi-sites, please add additional sites as guided in the example below
-
-    **Example**
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<FilterDrupal_Connection>
-
-    <connection server="mysql" port="3306" dbname="drupalsite1" user="drupalsite1_user" password="drupalsite1_user_pw">
-    <sql>
-       SELECT DISTINCT u.uid AS userid, u.name AS Name, u.pass AS Pass,r.name AS Role FROM (users u LEFT JOIN users_roles ON u.uid=users_roles.uid) LEFT JOIN role r ON r.rid=users_roles.rid WHERE u.name=? AND u.pass=?;
-    </sql>
-    </connection>
-
-    <connection server="mysql" port="3306" dbname="drupalsite2" user="drupalsite2_user" password="drupalsite2_user_pw">
-    <sql>
-       SELECT DISTINCT u.uid AS userid, u.name AS Name, u.pass AS Pass,r.name AS Role FROM (users u LEFT JOIN users_roles ON u.uid=users_roles.uid) LEFT JOIN role r ON r.rid=users_roles.rid WHERE u.name=? AND u.pass=?;
-    </sql>
-    </connection>
-
-</FilterDrupal_Connection>
-```
-
-
-* `fedora/repository-policies` - endusers can edit the files contained within for more granular or customized Fedora user permissions or repository access.
+* `fedora/repository-policies` - endusers can edit the files contained within for more granular or customized Fedora user permissions or repository access. These files will need to be bind-mounted in along with the appropriate edits to the appropriate ISLE `docker-compose.yml` file template.
 
 ## MySQL
 
 The `mysql` subdirectory contains all specific configurations and overrides necessary for the ISLE mysql image and resulting container to function properly with your changes. This is the Mysql database server that will contain at least two databases, one for the Islandora / Drupal website and the other for the Fedora repository. If you are running Drupal multi-sites, you'll need to create the additional users and database creation scripts.
 
-* (_Optional_) Edit the Mysql configuration file `my.cnf` as needed otherwise leave alone.
+* (_Optional_) Review Mysql configuration file `my.cnf` and add / flow the customizations to the ISLE.cnf file. Note this file will need to be bind-mounted in. (TO DO) Create a better walkthrough of MySQL tuning.
 
-
-#### Mysql - initscripts
-
-This subdirectory houses SQL scripts necessary for a one time creation of your associated new site and `fedora3` database.
-
-You'll want to rename `newsite_sample_db.sql` to the database or domain name of your choice.
-
-* Edit the contents of `newsite_sample_db.sql` to create the new drupal site database and user.
-
-    * Line 1: Change the database name from `newsite_sample_db` to the database name of your choice.
-
-    * Line 2: Change the database user name from `newsite_sample_db_user` to the database user name of your choice.
-
-    * Line 3: At almost the end of the line, change the value of `newsite_sample_db.*` to the to the database name of your choice ensuring the `.*` remain without a space.
-
-    * Line 3: At the end of the line, change the value of `newsite_sample_db_user'` to the to the database user name of your choice ensuring the values remain with in the `''`quotes without spaces. Do not alter the remaining code (`@'%';'`) beyond that point.
-
-* Edit the contents of `fedora3` to change the `fedora_admin` user password only.
-
-    * Line 2: Change the `fedora_admin` user password from `newsite_sample_fedora_admin_pw` to the password of your choice.
-
-    * It is not recommended to change anything else.
 
 ## Solr
 
@@ -257,12 +225,12 @@ Compare, edit, merge or copy the following from the source directory `current-pr
   * /var/lib/tomcat7/webapps/solr
   * /usr/share/tomcat/webapps/solr
 
----
+(TO DO) - Write up of comparison / merge process to [Discovery Garden basic-solr-config](https://github.com/discoverygarden/basic-solr-config) setup.
 
-## Proxy Directory
+### Gsearch Islandora Transforms
 
-If need be, please refer to the **Systems** section of the [Glossary](../appendices/glossary.md) for relevant terms to help guide installation.
+(TO DO) - Expand on this with:
 
-This directory and service will not exist on any current islandora production systems.
-
-* Please follow the [Remote Server ISLE Installation](../install/install-server.md), `### Proxy Directory` section, lines 317 - 395.
+* `foxmlToSolr.xslt`
+* additional transforms e.g. `RELS-EXT` etc
+* custom transform inclusions and how to bind-mount these files

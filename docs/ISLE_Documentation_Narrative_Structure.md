@@ -72,7 +72,7 @@ Level up - Intermediate
          * Transforms
          * Solr configs
        * Editing ISLE staging template 
-       * Flow in your institutional customizations
+       * Flow in your institutional customizations and how to comment appropriately to maintain changes during ISLE upgrades.
        * Checking these changes into the ISLE config git repository
      * Cloning to your `Staging` system  
      * Getting copied production data into place on `Staging` system
@@ -122,7 +122,7 @@ Level up - Intermediate
          * Transforms
          * Solr configs
        * Editing ISLE staging template 
-       * Flow in your institutional customizations
+       * Flow in your institutional customizations and how to comment appropriately to maintain changes during ISLE upgrades.
        * Checking these changes into the ISLE config git repository
      * Cloning to your `Production` system  
      * Getting copied production data into place on `Production` system
