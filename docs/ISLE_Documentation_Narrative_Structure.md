@@ -117,6 +117,7 @@ Level up - Intermediate
       * AWS system
       * GCP system
       * Bare-Metal system
+      * Diagram(s)
   * Installation on Host Server
     * Associated usage
     * Changes in memory allocation
@@ -129,14 +130,17 @@ Level up - Intermediate
     * git usage specific to `Production`
       * Managing Production Islandora and Drupal code in a repo
         * Testing on dev, pushing to staging, pushing to production
+        * Diagram(s)
       * Managing Production ISLE configs in a repo
         * Use `Production` `docker-compose.yml` template
         * Configurations specific to `Production`
       * Isle updates - images
         * git upstreams
         * ISLE upgrading - pulling images on the system and how to restart a system
+        * Diagram(s)
     * Scheduling for work related things
     * Shared work in Islandora - teams
+      * Diagram(s)
     * Testing code - CI / Behat
   * Specifics to public environments
     * Security
@@ -157,6 +161,7 @@ Level up - Intermediate
      * Review for `Production`  
        * Gathering / copying data from non-ISLE production systems
        * Gathering / copying specific non-ISLE production configurations
+       * Diagram(s)
      * Merging / editing configurations on a local
        * Work from `Staging` ISLE config
        * Comparison process to ISLE "stock" as a caution.
@@ -165,7 +170,8 @@ Level up - Intermediate
        * Editing ISLE staging template 
        * Flow in your institutional customizations and how to comment appropriately to maintain changes during ISLE upgrades.
        * Checking these changes into the ISLE config git repository
-     * Cloning to your `Production` system  
+     * Cloning to your `Production` system
+       * Diagram(s)
      * Getting copied production data into place on `Production` system
      * Spinning up system and QC
      * Troubleshooting
@@ -178,12 +184,14 @@ Level up - Advanced
     * `confd` - dynamic configuration
     * `traefik` - proxy / Docker service communication
     * `s6` - process management
+    * Diagram(s)
   * Bind-mounting customizations to ISLE
   * Changing values in containers
   * Host interaction
+    * Diagram(s)
   * Networking
   * Environments
-  * Diagrams
+    * Diagram(s)
 * Releases
   * Projects
   * Numbering
@@ -201,7 +209,9 @@ Level up - Advanced
   * Dockerhub.com
   * Github.com
   * Issues queue and workflow
+    * Diagram(s)
   * Code of Conduct
   * Git workflows
+    * Diagram(s)
   * Role definition and reporting to ICG steering committee
   * Committer & Maintainer Recruitment
