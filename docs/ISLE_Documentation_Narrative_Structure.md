@@ -3,12 +3,12 @@
 ### Objective
 Create the starter page that is printed "evolution" of an ISLE user and their "leveling up" in needs from demo to production system. This should be a modular structure balancing understanding with quickstart style distilled facts. 
 
-* Use cases
-  * Demo site
-  * Local Development
-  * Staging 
-  * Production (Public, finished code)
-  * Building ISLE / Maintainers
+* Use cases - (Levels)
+  * Demo site - (Starting level)
+  * Local Development - (Intermediate)
+  * Staging - (Intermediate)
+  * Production - (Intermediate) 
+  * Building ISLE - (Maintainers / Advanced)
 
 Introduction - Starting level
 * Demo site
