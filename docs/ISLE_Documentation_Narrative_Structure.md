@@ -62,6 +62,7 @@ Level up - Intermediate
       * Managing Staging ISLE configs in a repo
         * Use `Staging` `docker-compose.yml` template
         * Configurations specific to `Staging`
+          * Managing an ingest bind mount
       * Isle updates - images
         * git upstreams
         * ISLE upgrading - pulling images on the system and how to restart a system
@@ -133,6 +134,7 @@ Level up - Intermediate
    * Migrating your current non-ISLE Islandora system
      * Lessons learned from `Staging` setup.
        * Flow in changes and adapt for `Production` specifically
+       * Managing an ingest bind mount
      * Review for `Production`  
        * Gathering / copying data from non-ISLE production systems
        * Gathering / copying specific non-ISLE production configurations
