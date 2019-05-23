@@ -52,6 +52,11 @@ Level up - Intermediate
 * Staging site - 
   * Use case: 3rd use case (Not public, with almost finished code, Fedora data refreshed from Production systems).
   * Requirements
+  * Infrastructure
+    * How do I setup a ...
+      * AWS system
+      * GCP system
+      * Bare-Metal system
   * Installation on Host Server
     * Associated usage
   * Data and configuration differences from `Local` & `Production`
@@ -107,6 +112,11 @@ Level up - Intermediate
 * Production
   * Use case: 4th use case (Public, finished code, main Fedora data)
   * Requirements
+  * Infrastructure
+    * How do I setup a ...
+      * AWS system
+      * GCP system
+      * Bare-Metal system
   * Installation on Host Server
     * Associated usage
     * Changes in memory allocation
