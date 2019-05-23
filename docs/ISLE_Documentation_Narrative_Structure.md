@@ -109,6 +109,8 @@ Level up - Intermediate
   * Requirements
   * Installation on Host Server
     * Associated usage
+    * Changes in memory allocation
+      * Table of suggestions e.g. Java memory
   * Data and configuration differences from `Staging`
   * New Production concepts
     * Backups
