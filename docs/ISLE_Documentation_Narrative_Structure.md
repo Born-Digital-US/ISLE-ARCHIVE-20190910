@@ -95,6 +95,13 @@ Level up - Intermediate
      * Getting copied production data into place on `Staging` system
      * Spinning up system and QC
      * Troubleshooting
+   * Ingest tools and workflows
+     * How do I migrate / import data and collections from a different system that isn't Islandora?
+     * Tools
+       * Islandora Batch Import
+       * Islandora Multi-importer https://github.com/mnylc/islandora_multi_importer
+         * How to install IMI (Insert Shaun T's instructions here. Thanks Shaun!)
+       * Move to Islandora Kit https://github.com/MarcusBarnes/mik
 
 Level up - Intermediate
 * Production
