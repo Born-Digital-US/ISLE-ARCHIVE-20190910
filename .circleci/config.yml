@@ -79,14 +79,14 @@ jobs:
       - run:
           name: Actually run the behat tests
           command: docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags apache"
-      - run:
-          name: Move artifacts
-          command: |
-            docker cp isle-apache-ld:/var/www/html/sites/behat/results/ /tmp/artifacts
-            docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
+      # - run:
+      #     name: Move artifacts
+      #     command: |
+      #       docker cp isle-apache-ld:/var/www/html/sites/behat/results/ /tmp/artifacts
+      #       docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
 
       - store_artifacts:
-          path: /tmp/artifacts
+          path: ~/born-digital/data/isle-apache-data/isle-ingest-samples/behat/debug
 
 # workflows:
 #   version: 2
