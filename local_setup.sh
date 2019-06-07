@@ -1,5 +1,3 @@
-docker-compose down -v
-rm -rf isle-ingest-samples && rm -rf data/isle-apache-data/isle-ingest-samples
 docker-compose pull
 docker-compose up -d
 # say "Docker is up"
@@ -32,11 +30,6 @@ docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -u 1 islandora
 
 # docker exec -it isle-apache-ld bash -c "sh /var/www/html/isle-ingest-samples/Batches-by-CModel/ingest_samples.sh /var/www/html" # manually took the newspaper OCR stuff out
 # say "Samples ingested"
-
-# say "Ready for testing" # TODO: are the next restart commands really necessary?
-# docker-compose down
-# docker-compose up -d
-# sleep 300
 
 # service tests first
 docker exec -it isle-apache-ld bash -c "cd /var/www/html/ && drush en simpletest -y"
