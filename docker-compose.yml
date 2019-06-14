@@ -113,7 +113,6 @@ services:
     container_name: isle-apache-${CONTAINER_SHORT_ID}
     environment:
       - PULL_ISLE_BUILD_TOOLS=true # Defaults to true.
-      - ISLANDORA_UID=1001
     env_file:
       - .env
     networks:
