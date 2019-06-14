@@ -84,7 +84,9 @@ jobs:
       #       docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
 
       - store_artifacts:
-          path: ~/born-digital/data/isle-apache-data/isle-ingest-samples/behat/debug
+          path: ~/born-digital/data/isle-apache-data/isle-ingest-samples/behat/debug/logs
+      - store_artifacts:
+          path: ~/born-digital/data/isle-apache-data/isle-ingest-samples/behat/debug/screenshots
 
 # workflows:
 #   version: 2
