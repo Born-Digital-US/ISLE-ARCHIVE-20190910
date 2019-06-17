@@ -51,10 +51,10 @@ jobs:
       - run:
           name: Set up for BEHAT on remote server
           command: |
-            docker cp isle-behat isle-apache-ld:/var/www/html/isle-behat
-            docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-behat/behat /var/www/html/sites/behat"
-            docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-behat/behat/debug/logs/"
-            docker exec -it isle-apache-ld bash -c "chown -R circleci:www-data /var/www/html/isle-behat/behat"
+            cd isle && docker cp isle-behat isle-apache-ld:/var/www/html/isle-behat
+            docker exec -it isle-apache-ld bash -c "ln -s /var/www/html/isle-behat /var/www/html/sites/behat"
+            docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/isle-behat/debug/logs/"
+            docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/isle-behat/"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
 
       # - run:
@@ -78,7 +78,10 @@ jobs:
       # - run: sleep 40
       - run:
           name: Run the behat tests
-          command: docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && php behat --tags apache"
+          command: |
+            docker exec -it isle-apache-ld bash -c "chmod 700 run-isle-tests.sh"
+            docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --run=services"
+            docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --run=apache"
           no_output_timeout: 20m
       # - run:
       #     name: Move artifacts
@@ -87,11 +90,11 @@ jobs:
       #       docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
       - run:
           name: Fix artifact file permissions
-          command: sudo chmod -R 777 /home/circleci/isle/data/isle-apache-data/isle-ingest-samples/behat/debug/
+          command: sudo chmod -R 777 /home/circleci/isle/data/isle-apache-data/isle-behat/debug/
       - store_artifacts:
-          path: ~/isle/data/isle-apache-data/isle-ingest-samples/behat/debug/logs
+          path: ~/isle/data/isle-apache-data/isle-ingest-samples/debug/logs
       - store_artifacts:
-          path: ~/isle/data/isle-apache-data/isle-ingest-samples/behat/debug/screenshots
+          path: ~/isle/data/isle-apache-data/isle-ingest-samples/debug/screenshots
 
 # workflows:
 #   version: 2
