@@ -10,6 +10,11 @@ jobs:
     shell: /bin/bash --login
     steps:
       - checkout
+      # - run:
+      #     name: "Pull Submodules"
+      #     command: |
+      #       git submodule init
+      #       git submodule update --remote
 
       - run:
           name: Fetch bd sample repo
@@ -17,10 +22,9 @@ jobs:
             cp .circleci/fetch-key* ~/.ssh/
             mkdir data
             git clone git@github.com:Born-Digital-US/isle-ingest-samples.git data/isle-apache-data/isle-ingest-samples
-      # - run: docker-compose pull
+
       - run: docker-compose up -d
-      - run: sleep 40 # sleep reduced because the next line takes some time
-      # - run: sudo apt-get update && sudo apt --fix-broken install -y
+      - run: sleep 40
       - run:
           name: Start container and verify it's working
           command: |
@@ -32,16 +36,18 @@ jobs:
           command: |
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/Islandora-Labs/islandora_solution_pack_oralhistories.git"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_oralhistories"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/mjordan/islandora_batch_with_derivs.git"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch_with_derivs"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_book_batch"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_newspaper_batch"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/MarcusBarnes/islandora_compound_batch.git"
-            docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush dis overlay -y"
             sudo -- sh -c "echo 127.0.0.1 isle.localdomain >> /etc/hosts"
           no_output_timeout: 20m
+          # REMOVED - we don't need these if we're not doing bulk ingest
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch"
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/mjordan/islandora_batch_with_derivs.git"
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch_with_derivs"
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_book_batch"
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_newspaper_batch"
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/MarcusBarnes/islandora_compound_batch.git"
+          # docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_compound_batch"
+
       - run:
           name: Set up for BEHAT on remote server
           command: |

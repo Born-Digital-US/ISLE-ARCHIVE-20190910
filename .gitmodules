@@ -22,3 +22,6 @@
 [submodule "ansible"]
 	path = ansible
 	url = https://github.com/Islandora-Collaboration-Group/ISLE-Ansible.git
+[submodule "isle-behat"]
+	path = isle-behat
+	url = https://github.com/Born-Digital-US/isle-behat.git
