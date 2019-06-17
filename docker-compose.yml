@@ -153,10 +153,8 @@ services:
       - traefik.enable=true  ## NOT SAFE FOR PRODUCTION! ##
       - traefik.frontend.rule=Host:admin.${BASE_DOMAIN};
 
-  # ref: https://bitbucket.org/commonmedia/whitman.localdomain/src/master/docker-compose.yml
   chrome:
-    image: selenium/node-chrome:3.11.0-dysprosium # compass uses this one
-    # image: selenium/node-chrome:3.141.59-neon # latest
+    image: selenium/node-chrome:3.141.59-neon # latest
     volumes:
       - /dev/shm:/dev/shm
       - ./data/isle-apache-data:/var/www/html:ro
@@ -168,33 +166,15 @@ services:
       # - HUB_PORT_4444_TCP_PORT=4444
       - HUB_PORT=4444
       - HUB_HOST=hub
-    container_name: bd-ld-chrome
+    container_name: isle-chrome-${CONTAINER_SHORT_ID}
     networks:
       - isle-internal
 
-  # firefox:
-  #   image: selenium/node-chrome:3.11.0-dysprosium # compliant with the compass version
-  #   # image: selenium/node-firefox:3.141.59-neon # latest
-  #   volumes:
-  #     - /dev/shm:/dev/shm
-  #     - ./data/isle-apache-data:/var/www/html:ro
-  #   depends_on:
-  #     - hub
-  #     - apache
-  #   environment:
-  #     - HUB_HOST=hub
-  #     - HUB_PORT=4444
-  #   container_name: bd-ld-firefox
-  #   networks:
-  #     - isle-internal
-
-  # ref: https://bitbucket.org/commonmedia/whitman.localdomain/src/master/docker-compose.yml
   hub:
-    image: selenium/hub:3.11.0-dysprosium # compass uses this one
-    # image: selenium/hub:3.141.59-neon # latest
+    image: selenium/hub:3.141.59-neon # latest
     ports:
       - "4444:4444"
-    container_name: bd-ld-hub
+    container_name: isle-hub-${CONTAINER_SHORT_ID}
     networks:
       - isle-internal
 
