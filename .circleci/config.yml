@@ -82,7 +82,9 @@ jobs:
       #     command: |
       #       docker cp isle-apache-ld:/var/www/html/sites/behat/results/ /tmp/artifacts
       #       docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
-
+      - run:
+          name: Fix artifact file permissions
+          command: sudo chmod -R 777 /home/circleci/born-digital/data/isle-apache-data/isle-ingest-samples/behat/debug/
       - store_artifacts:
           path: ~/born-digital/data/isle-apache-data/isle-ingest-samples/behat/debug/logs
       - store_artifacts:
