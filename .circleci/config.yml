@@ -17,7 +17,7 @@ jobs:
       #       git submodule update --remote
       - run:
           name: Change main UID
-          command: sed -i 's/ISLANDORA_UID=1000/ISLANDORA_UID=1001/g' .env 
+          command: sed -i 's/ISLANDORA_UID=1000/ISLANDORA_UID=1001/g' .env
       - run:
           name: Fetch behat suite repo
           command: |
@@ -57,7 +57,7 @@ jobs:
             docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/sites/behat/debug/logs/"
             docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/sites/behat/"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
-
+            docker exec -it isle-apache-ld bash -c "chmod 700 /var/www/html/sites/behat/run-isle-tests.sh"
       # - run:
       #     name: Ingest base collection
       #     command: |
@@ -80,7 +80,6 @@ jobs:
       - run:
           name: Run the behat tests
           command: |
-            docker exec -it isle-apache-ld bash -c "chmod 700 run-isle-tests.sh"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --run=services"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && ./run-isle-tests.sh --run=apache"
           no_output_timeout: 20m
@@ -91,11 +90,11 @@ jobs:
       #       docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
       - run:
           name: Fix artifact file permissions
-          command: sudo chmod -R 777 /home/circleci/isle/data/isle-apache-data/isle-behat/debug/
+          command: sudo chmod -R 777 /home/circleci/isle/data/isle-behat/isle-behat/debug/
       - store_artifacts:
-          path: ~/isle/data/isle-apache-data/isle-ingest-samples/debug/logs
+          path: ~/isle/data/isle-apache-data/isle-behat/debug/logs
       - store_artifacts:
-          path: ~/isle/data/isle-apache-data/isle-ingest-samples/debug/screenshots
+          path: ~/isle/data/isle-apache-data/isle-behat/debug/screenshots
 
 # workflows:
 #   version: 2
