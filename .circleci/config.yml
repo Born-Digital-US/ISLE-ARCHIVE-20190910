@@ -15,7 +15,9 @@ jobs:
       #     command: |
       #       git submodule init
       #       git submodule update --remote
-
+      - run:
+          name: Change main UID
+          command: sed -i 's/ISLANDORA_UID=1000/ISLANDORA_UID=1001/g' .env 
       - run:
           name: Fetch behat suite repo
           command: |
@@ -51,7 +53,7 @@ jobs:
       - run:
           name: Set up for BEHAT on remote server
           command: |
-            cd isle && docker cp isle-behat isle-apache-ld:/var/www/html/sites/behat
+            docker cp ~/isle/isle-behat isle-apache-ld:/var/www/html/sites/behat
             docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/sites/behat/debug/logs/"
             docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/sites/behat/"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
