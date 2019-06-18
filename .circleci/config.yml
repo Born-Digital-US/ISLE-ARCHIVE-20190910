@@ -58,6 +58,7 @@ jobs:
             docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/sites/behat/"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
             docker exec -it isle-apache-ld bash -c "chmod 700 /var/www/html/sites/behat/run-isle-tests.sh"
+            sudo chmod -R 777 ~/isle/data/isle-apache-data/sites/behat/
       # - run:
       #     name: Ingest base collection
       #     command: |
