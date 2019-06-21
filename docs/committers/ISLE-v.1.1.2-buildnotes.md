@@ -5,12 +5,12 @@
 * ISLE config
   * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/ISLE.git`
   * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/isle-apache.git`
-  * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/ISLE-Drupal-Build-Tools.git`
+  * `git clone https://github.com/Born-Digital-US/ISLE-Drupal-Build-Tools.git` (_master and ISLE-v.1.1.2 are at sync, I had to use master due to prior failures._)
   * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/isle-imageservices.git`
   * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/isle-fedora.git`
   * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/isle-solr.git`
   * `git clone -b ISLE-v.1.1.2.dev https://github.com/Born-Digital-US/isle-tomcat.git`
-  * `git clone -b master https://github.com/Born-Digital-US/isle-mysql.git` (_No code changes just an image rebuild_)
+  * `git clone https://github.com/Born-Digital-US/isle-mysql.git` (_No code changes just an image rebuild_)
 
 * `cd ISLE`
   * Launch the ISLE stack:
@@ -19,7 +19,12 @@
   * Install Islandora on the isle-apache-ld container:
   * `docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh`
     * Please note this will run the `https://github.com/Born-Digital-US/ISLE-Drupal-Build-Tools.git` version which has changes to the installer vsets.
- 
+
+* Recommend a test of all ingest and content types and especially Large Image format using the open-seadragon viewer.
+  * Do things display properly etc?
+  * Check that within the Large Image format Solution Pack configuration page that Kakadu is "turned off" and the checkbox to use it is unchecked. https://isle.localdomain/node#overlay=admin/islandora/solution_pack_config/large_image
+  * Can one ingest properly tiffs with this setting on and off?
+
 * Recommend a test with ingesting a large set of data / objects that need OCR.
   * As the batch ingest proceeds or perhaps when it has finished:
     * `docker exec -it isle-apache-ld bash`
