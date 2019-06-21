@@ -92,13 +92,13 @@ jobs:
       #       docker cp isle-apache-ld:/var/www/html/sites/behat/debug/ /tmp/artifacts
       - run:
           name: Fix artifact file permissions
-          command: sudo chown -R circleci:www-data /home/circleci/isle/data/isle-apache-data/sites/behat/debug/
+          command: |
+            mkdir /home/circleci/artifacts
+            sudo cp /home/circleci/isle/data/isle-apache-data/sites/behat/debug/* /home/circleci/artifacts/
+            sudo chown -R circleci:circleci /home/circleci/artifacts/
       - store_artifacts:
-          path: /home/circleci/isle/data/isle-apache-data/sites/behat/debug/logs
-          destination: behat-logs
-      - store_artifacts:
-          path: /home/circleci/isle/data/isle-apache-data/sites/behat/debug/screenshots
-          destination: behat-screenshots
+          path: /home/circleci/artifacts/
+          destination: behat-artifacts
 
 # workflows:
 #   version: 2
