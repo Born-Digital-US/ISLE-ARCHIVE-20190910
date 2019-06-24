@@ -55,7 +55,6 @@ jobs:
           name: Set up for BEHAT on remote server
           command: |
             docker cp ~/isle/isle-behat isle-apache-ld:/var/www/html/sites/behat
-            docker exec -it isle-apache-ld bash -c "mkdir /var/www/html/sites/behat/debug/logs/"
             docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/sites/behat/"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
             docker exec -it isle-apache-ld bash -c "chmod 700 /var/www/html/sites/behat/run-isle-tests.sh"
@@ -96,6 +95,7 @@ jobs:
             mkdir /home/circleci/artifacts
             sudo cp /home/circleci/isle/data/isle-apache-data/sites/behat/debug/* /home/circleci/artifacts/
             sudo chown -R circleci:circleci /home/circleci/artifacts/
+          when: always
       - store_artifacts:
           path: /home/circleci/artifacts/
           destination: behat-artifacts
