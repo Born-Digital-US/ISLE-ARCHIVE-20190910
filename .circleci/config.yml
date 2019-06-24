@@ -97,6 +97,7 @@ jobs:
             cp -r /home/circleci/isle/data/isle-apache-data/sites/behat/debug/* /home/circleci/artifacts/
             chown -R circleci:circleci /home/circleci/artifacts/
             exit
+            exit
           when: always
       - store_artifacts:
           path: /home/circleci/artifacts/
