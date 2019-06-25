@@ -92,12 +92,9 @@ jobs:
       - run:
           name: Fix artifact file permissions
           command: |
-            sudo -s
-            mkdir /home/circleci/artifacts
-            cp -r /home/circleci/isle/data/isle-apache-data/sites/behat/debug/* /home/circleci/artifacts/
-            chown -R circleci:circleci /home/circleci/artifacts/
-            exit
-            true
+            sudo mkdir /home/circleci/artifacts
+            sudo cp -r /home/circleci/isle/data/isle-apache-data/sites/behat/debug/ /home/circleci/artifacts
+            sudo chown -R circleci:circleci /home/circleci/artifacts/
           when: always
       - store_artifacts:
           path: /home/circleci/artifacts/
