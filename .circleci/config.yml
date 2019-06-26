@@ -35,7 +35,7 @@ jobs:
             docker exec -it isle-apache-ld bash /utility-scripts/isle_drupal_build_tools/isle_islandora_installer.sh
           no_output_timeout: 20m
       - run:
-          name: Drush en dependencies: basic
+          name: Drush en basic dependencies
           command: |
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/Islandora-Labs/islandora_solution_pack_oralhistories.git"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_oralhistories"
@@ -44,7 +44,7 @@ jobs:
           no_output_timeout: 20m
       - run:
           # While we don't need these if we're not doing bulk ingest, sometimes they are dependencies for batch functions
-          name: Drush en dependencies: batch
+          name: Drush en batch dependencies
           command: |
             docker exec -it isle-apache-ld bash -c "cd /var/www/html && drush -y -u 1 en islandora_batch"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/all/modules/islandora && git clone https://github.com/mjordan/islandora_batch_with_derivs.git"
@@ -62,6 +62,8 @@ jobs:
             docker exec -it isle-apache-ld bash -c "chown -R islandora:www-data /var/www/html/sites/behat/"
             docker exec -it isle-apache-ld bash -c "cd /var/www/html/sites/behat && composer install "
             docker exec -it isle-apache-ld bash -c "chmod 700 /var/www/html/sites/behat/run-isle-tests.sh"
+            docker exec -it isle-apache-ld bash -c "sudo chmod 777 /var/www/html/sites/behat/debug/logs/"
+    
       # sudo chmod -R 777 ~/isle/data/isle-apache-data/sites/behat/
       # - run:
       #     name: Ingest base collection
